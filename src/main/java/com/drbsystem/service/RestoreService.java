@@ -20,120 +20,104 @@ import com.drbsystem.repository.RestoreLogRepository;
 @Service
 public class RestoreService {
 
-    private static final Logger logger =
-            LoggerFactory.getLogger(RestoreService.class);
+	private static final Logger logger = LoggerFactory.getLogger(RestoreService.class);
 
-    @Autowired
-    private BackupRepository backupRepo;
-    
-    @Autowired
-    private RestoreLogRepository restoreLogRepo;
+	@Autowired
+	private BackupRepository backupRepo;
 
-    // =========================
-    // DATABASE RESTORE
-    // =========================
+	@Autowired
+	private RestoreLogRepository restoreLogRepo;
 
-    public String restoreDatabase(Long backupId) throws Exception {
+	// =========================
+	// DATABASE RESTORE
+	// =========================
 
-        BackupMetadata metadata =
-                backupRepo.findById(backupId)
-                .orElseThrow(() ->
-                        new RuntimeException("Backup Not Found"));
+	public String restoreDatabase(Long backupId) throws Exception {
 
-        String backupFilePath = metadata.getFilePath();
+		BackupMetadata metadata = backupRepo.findById(backupId)
+				.orElseThrow(() -> new RuntimeException("Backup Not Found"));
 
-        logger.info("Database restore started");
+		String backupFilePath = metadata.getFilePath();
 
-        ProcessBuilder pb = new ProcessBuilder(
-                "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe",
-                "-uroot",
-                "-proot9099",
-                "drb_system"
-        );
+		logger.info("Database restore started");
 
-        pb.redirectInput(new File(backupFilePath));
+		ProcessBuilder pb = new ProcessBuilder("C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe", "-uroot",
+				"-proot9099", "drb_system");
 
-        Process process = pb.start();
+		pb.redirectInput(new File(backupFilePath));
 
-        int code = process.waitFor();
+		Process process = pb.start();
 
-        if (code == 0) {
+		int code = process.waitFor();
 
-            logger.info("Database restore successful");
+		if (code == 0) {
 
-            RestoreLog log = new RestoreLog(
-                    backupFilePath,
-                    "SUCCESS",
-                    LocalDateTime.now()
-            );
+			logger.info("Database restore successful");
 
-            restoreLogRepo.save(log);
+			RestoreLog log = new RestoreLog(backupFilePath, "SUCCESS", LocalDateTime.now());
 
-            return "Restore Successful";
+			restoreLogRepo.save(log);
 
-        } else {
+			return "Restore Successful";
 
-            String error =
-                    new String(process.getErrorStream().readAllBytes());
+		} else {
 
-            logger.error("Restore Error: {}", error);
+			String error = new String(process.getErrorStream().readAllBytes());
 
-            RestoreLog log = new RestoreLog(
-                    backupFilePath,
-                    "FAILED",
-                    LocalDateTime.now()
-            );
+			logger.error("Restore Error: {}", error);
 
-            restoreLogRepo.save(log);
+			RestoreLog log = new RestoreLog(backupFilePath, "FAILED", LocalDateTime.now());
 
-            throw new RuntimeException(error);
-        }
-    }
+			restoreLogRepo.save(log);
 
-    // =========================
-    // FILE RESTORE
-    // =========================
+			throw new RuntimeException(error);
+		}
+	}
 
-    public void restoreFiles(String zipPath,
-                             String targetDir) throws Exception {
+	// =========================
+	// FILE RESTORE
+	// =========================
 
-        logger.info("File restore started");
+	public String restoreFiles(String zipFilePath, String restoreDir) throws Exception {
 
-        ZipInputStream zis =
-                new ZipInputStream(
-                        new FileInputStream(zipPath));
+		File dir = new File(restoreDir);
 
-        ZipEntry entry;
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
 
-        while ((entry = zis.getNextEntry()) != null) {
+		ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFilePath));
 
-            File newFile =
-                    new File(targetDir, entry.getName());
+		ZipEntry entry;
 
-            FileOutputStream fos =
-                    new FileOutputStream(newFile);
+		while ((entry = zis.getNextEntry()) != null) {
 
-            byte[] buffer = new byte[1024];
+			File newFile = new File(restoreDir + File.separator + entry.getName());
 
-            int len;
+			FileOutputStream fos = new FileOutputStream(newFile);
 
-            while ((len = zis.read(buffer)) > 0) {
+			byte[] buffer = new byte[1024];
 
-                fos.write(buffer, 0, len);
-            }
+			int len;
 
-            fos.close();
-        }
+			while ((len = zis.read(buffer)) > 0) {
+				fos.write(buffer, 0, len);
+			}
 
-        zis.close();
+			fos.close();
 
-        logger.info("File restore completed");
-    }
-    
-    public RestoreLog getRestoreStatus(Long id) {
+			zis.closeEntry();
+		}
 
-        return restoreLogRepo.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Restore Log Not Found"));
-    }
+		zis.close();
+
+		return "Files Restored Successfully";
+	}
+
+	public RestoreLog getRestoreStatus(Long id) {
+
+		return restoreLogRepo.findById(id).orElseThrow(() -> new RuntimeException("Restore Log Not Found"));
+	}
+	
+	
 }
