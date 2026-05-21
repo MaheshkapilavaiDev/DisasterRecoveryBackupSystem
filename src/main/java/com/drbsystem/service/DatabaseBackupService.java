@@ -41,7 +41,7 @@ public class DatabaseBackupService {
 		String fileName = "db-backup-" + System.currentTimeMillis() + ".sql";
 		String filePath = backupLocation + fileName;
 
-		ProcessBuilder pb = new ProcessBuilder("C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe", "-u" + username, "-p" + password, dbName);
+		ProcessBuilder pb = new ProcessBuilder("C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe", "-u" + username, "-p" + password, dbName,"--result-file=");
 
 		pb.redirectOutput(new File(filePath));
 
