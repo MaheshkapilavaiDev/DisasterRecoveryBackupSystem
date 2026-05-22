@@ -3,12 +3,20 @@ package com.drbsystem.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ScheduledBackupService {
+	
+	
+	@Autowired
+	private AlertService alertService;
+	
+	@Autowired
+	private AutoRecoveryService autoRecoveryService;
 
 	@Value("${backup.location}")
 	private String backupLocation;
@@ -22,29 +30,52 @@ public class ScheduledBackupService {
 	@Scheduled(cron = "0 */1 * * * *")
 	public void autoBackup() {
 
-		try {
-			
-			  System.out.println("Scheduler Started");
+		int retry = 3;
 
-			String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		while (retry > 0) {
 
-			String backupFile = backupLocation + "db_backup_" + timestamp + ".sql";
+			try {
 
-			ProcessBuilder pb = new ProcessBuilder("C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe", "-u" + dbUser, "-p" + dbPassword, "drb_system",
-					"--result-file=" + backupFile);
+				System.out.println("Scheduler Started");
 
-			Process process = pb.start();
+				String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-			int exitCode = process.waitFor();
+				String backupFile = backupLocation + "db_backup_" + timestamp + ".sql";
 
-			if (exitCode == 0) {
-				System.out.println("Backup Created Successfully: " + backupFile);
-			} else {
-				System.out.println("Backup Failed");
+				ProcessBuilder pb = new ProcessBuilder("C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe",
+						"-u" + dbUser, "-p" + dbPassword, "drb_system", "--result-file=" + backupFile);
+
+				Process process = pb.start();
+
+				int exitCode = process.waitFor();
+
+				if (exitCode == 0) {
+					System.out.println("Backup Created Successfully: " + backupFile);
+
+					break;
+				}else {
+					
+					throw new RuntimeException("Backup Process Failed");
+				}
+
+			} catch (Exception e) {
+
+			    retry--;
+
+			    System.out.println("Backup Failed. Retrying...");
+
+			    if (retry == 0) {
+
+			        System.out.println("All retries failed");
+
+			        alertService.sendAlert("Database Backup Failed!");
+
+			        autoRecoveryService.recoverDatabase();
+			    }
+
+			    e.printStackTrace();
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 	}
 }
