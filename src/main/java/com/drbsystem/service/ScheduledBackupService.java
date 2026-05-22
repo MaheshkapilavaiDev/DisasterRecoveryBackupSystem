@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ScheduledBackupService {
 	
-	
+	@Autowired
+	private IncrementalBackupService incrementalBackupService;
 	@Autowired
 	private EncryptionService encryptionService;
 	
@@ -57,6 +58,9 @@ public class ScheduledBackupService {
 
 				if (exitCode == 0) {
 					System.out.println("Backup Created Successfully: " + backupFile);
+					
+					incrementalBackupService
+			        .saveLastBackupTime();
 					
 					String compressed =
 							compressionService.compressFile(

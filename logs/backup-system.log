@@ -30,3 +30,35 @@
 2026-05-22T16:36:30.592+05:30  WARN 36968 --- [DisasterRecoveryBackupSystem] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2026-05-22T16:36:31.367+05:30  INFO 36968 --- [DisasterRecoveryBackupSystem] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
 2026-05-22T16:36:31.427+05:30  INFO 36968 --- [DisasterRecoveryBackupSystem] [main] .DisasterRecoveryBackupSystemApplication : Started DisasterRecoveryBackupSystemApplication in 10.904 seconds (process running for 11.71)
+2026-05-22T17:40:41.227+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] .DisasterRecoveryBackupSystemApplication : Starting DisasterRecoveryBackupSystemApplication using Java 21.0.10 with PID 23676 (C:\Users\HP\Downloads\DisasterRecoveryBackupSystem\DisasterRecoveryBackupSystem\target\classes started by HP in C:\Users\HP\Downloads\DisasterRecoveryBackupSystem\DisasterRecoveryBackupSystem)
+2026-05-22T17:40:41.235+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] .DisasterRecoveryBackupSystemApplication : No active profile set, falling back to 1 default profile: "default"
+2026-05-22T17:40:42.782+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-22T17:40:42.888+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 89 ms. Found 2 JPA repository interfaces.
+2026-05-22T17:40:43.902+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-05-22T17:40:43.933+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-05-22T17:40:43.934+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-05-22T17:40:44.050+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2705 ms
+2026-05-22T17:40:44.473+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-05-22T17:40:44.609+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.12.Final
+2026-05-22T17:40:45.794+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-22T17:40:45.857+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-05-22T17:40:46.499+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@19924f15
+2026-05-22T17:40:46.504+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-05-22T17:40:46.684+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/drb_system]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.46
+	Default catalog/schema: drb_system/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-05-22T17:40:48.383+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-22T17:40:48.532+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-22T17:40:48.689+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-05-22T17:40:49.038+05:30  WARN 23676 --- [DisasterRecoveryBackupSystem] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-22T17:40:49.810+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-05-22T17:40:49.829+05:30  INFO 23676 --- [DisasterRecoveryBackupSystem] [main] .DisasterRecoveryBackupSystemApplication : Started DisasterRecoveryBackupSystemApplication in 9.562 seconds (process running for 10.351)
