@@ -13,6 +13,12 @@ public class ScheduledBackupService {
 	
 	
 	@Autowired
+	private EncryptionService encryptionService;
+	
+	@Autowired
+	private CompressionService compressionService;
+	
+	@Autowired
 	private AlertService alertService;
 	
 	@Autowired
@@ -51,6 +57,17 @@ public class ScheduledBackupService {
 
 				if (exitCode == 0) {
 					System.out.println("Backup Created Successfully: " + backupFile);
+					
+					String compressed =
+							compressionService.compressFile(
+				                    backupFile);
+
+				    System.out.println("Compressed File: " + compressed);
+				    
+				    String encrypted =
+				            encryptionService.encryptFile(compressed);
+
+				    System.out.println("Encrypted File: " + encrypted);
 
 					break;
 				}else {
